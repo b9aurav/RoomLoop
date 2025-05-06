@@ -3,6 +3,7 @@
 import { useSession } from "@/lib/auth-client";
 import { useEffect, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
+import { useRoomContext } from "../context/RoomContext";
 
 interface Room {
   id: string;
@@ -15,6 +16,7 @@ export default function Sidebar() {
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const session = useSession();
+  const { refreshRooms } = useRoomContext();
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -36,7 +38,7 @@ export default function Sidebar() {
     };
 
     fetchRooms();
-  }, [session]);
+  }, [session, refreshRooms]);
 
   if (loading) {
     return (

@@ -5,8 +5,13 @@ import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { RoomProvider } from "../context/RoomContext";
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const session = useSession();
   const router = useRouter();
 
@@ -27,10 +32,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <div className="min-h-screen bg-base-200">
       <Navbar />
-      <div className="flex">
-        <Sidebar />
-        <div className="container mx-auto px-4 py-12">{children}</div>
-      </div>
+      <RoomProvider>
+        <div className="flex">
+          <Sidebar />
+          <div className="container mx-auto px-4 py-12">{children}</div>
+        </div>
+      </RoomProvider>
     </div>
   );
 }

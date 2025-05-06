@@ -3,10 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
+import { useRoomContext } from "@/app/context/RoomContext";
 
 export default function CreateRoom() {
-    const session = useSession();
+  const session = useSession();
   const router = useRouter();
+  const { refreshRooms } = useRoomContext();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -20,7 +22,11 @@ export default function CreateRoom() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -49,7 +55,7 @@ export default function CreateRoom() {
         setLoading(false);
         return;
       }
-
+      refreshRooms();
       router.push("/dashboard");
     } catch (err) {
       console.error("Failed to create room:", err);
@@ -119,7 +125,9 @@ export default function CreateRoom() {
           />
         </div>
         <div>
-          <label className="block font-semibold mb-1">Max Participants (Optional)</label>
+          <label className="block font-semibold mb-1">
+            Max Participants (Optional)
+          </label>
           <input
             type="number"
             name="maxParticipants"
@@ -138,7 +146,11 @@ export default function CreateRoom() {
             className="input input-bordered w-full"
           />
         </div>
-        <button type="submit" className="btn btn-primary w-full" disabled={loading}>
+        <button
+          type="submit"
+          className="btn btn-primary w-full"
+          disabled={loading}
+        >
           {loading ? "Creating..." : "Create Room"}
         </button>
       </form>
