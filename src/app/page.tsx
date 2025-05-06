@@ -1,4 +1,21 @@
+"use client";
+
+import { useGitHubSignIn } from "@/lib/auth-client";
+import { FaGithub } from "react-icons/fa";
+
+const FormError = ({ message }: { message: string }) => {
+  if (!message) return null;
+  return <div className="alert alert-error">{message}</div>;
+};
+
+const FormSuccess = ({ message }: { message: string }) => {
+  if (!message) return null;
+  return <div className="alert alert-success">{message}</div>;
+};
+
 export default function Home() {
+  const { githubSignIn, loading, error, success } = useGitHubSignIn();
+
   return (
     <main className="min-h-screen bg-base-200">
       {/* Hero Section */}
@@ -9,14 +26,6 @@ export default function Home() {
             <p className="py-6 text-gray-600">
               Effortlessly create, join, and explore micro-events. No links, no hassle — just rooms, vibes, and people.
             </p>
-            <div className="space-x-4">
-              <a href="#" className="btn btn-primary">
-                Sign In
-              </a>
-              <a href="#" className="btn btn-secondary">
-                Sign Up
-              </a>
-            </div>
           </div>
         </div>
       </div>
@@ -53,12 +62,20 @@ export default function Home() {
         <h2 className="text-3xl font-bold">Ready to get started?</h2>
         <p className="mt-4">Sign in or create an account to start your journey with RoomLoop!</p>
         <div className="mt-6 space-x-4">
-          <a href="#" className="btn btn-accent">
-            Sign In
-          </a>
-          <a href="#" className="btn btn-secondary">
-            Sign Up
-          </a>
+          <div className="card w-96 bg-base-100 shadow-xl mx-auto">
+            <div className="card-body">
+              <FormError message={error} />
+              <FormSuccess message={success} />
+              <button
+                className="btn btn-primary flex items-center justify-center gap-2"
+                onClick={githubSignIn}
+                disabled={loading}
+              >
+                <FaGithub />
+                {loading ? "Signing in..." : "Sign in With GitHub"}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </main>
