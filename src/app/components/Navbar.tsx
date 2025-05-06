@@ -2,6 +2,7 @@ import { useGitHubSignOut, useSession } from "@/lib/auth-client";
 import React from "react";
 import Image from "next/image";
 import { FaSignOutAlt } from "react-icons/fa";
+import ThemeController from "./ThemeController";
 
 const Navbar = () => {
   const { githubSignOut, loading } = useGitHubSignOut();
@@ -38,6 +39,7 @@ const Navbar = () => {
             <FaSignOutAlt />
             {loading ? "Signing out..." : "Sign Out"}
           </button>
+          <ThemeController />
         </div>
       </div>
     </nav>
