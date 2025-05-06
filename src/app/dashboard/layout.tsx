@@ -35,7 +35,7 @@ export default function DashboardLayout({
       <RoomProvider>
         <div className="flex">
           <Sidebar />
-          <div className="container mx-auto px-4 py-12">{children}</div>
+          <div className="container">{children}</div>
         </div>
       </RoomProvider>
     </div>

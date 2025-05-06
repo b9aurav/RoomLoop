@@ -4,6 +4,7 @@ import { useSession } from "@/lib/auth-client";
 import { useEffect, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { useRoomContext } from "../context/RoomContext";
+import { useRouter } from "next/navigation";
 
 interface Room {
   id: string;
@@ -17,6 +18,7 @@ export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const session = useSession();
   const { refreshRooms } = useRoomContext();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -48,6 +50,10 @@ export default function Sidebar() {
     );
   }
 
+  const openRoom = (roomId: string) => {
+    router.push(`/dashboard/rooms/${roomId}`);
+  }
+
   return (
     <div className="relative">
       <button
@@ -68,7 +74,7 @@ export default function Sidebar() {
             {createdRooms.length === 0 && <span>No rooms created yet.</span>}
             <div className="flex flex-col gap-2">
               {createdRooms.map((room) => (
-                <button key={room.id} className="btn btn-soft btn-accent">
+                <button key={room.id} onClick={() => openRoom(room.id)} className="btn btn-soft btn-accent">
                   {room.title}
                 </button>
               ))}
@@ -77,13 +83,15 @@ export default function Sidebar() {
         </div>
         <div className="mt-6">
           <h3 className="text-lg font-semibold mb-2">Joined Rooms</h3>
-          {joinedRooms.length === 0 && <span>No rooms joined yet.</span>}
           <ul className="space-y-2">
-            {joinedRooms.map((room) => (
-              <button key={room.id} className="btn btn-soft btn-accent">
-                {room.title}
-              </button>
-            ))}
+            {joinedRooms.length === 0 && <span>No rooms joined yet.</span>}
+            <div className="flex flex-col gap-2">
+              {joinedRooms.map((room) => (
+                <button key={room.id} onClick={() => openRoom(room.id)} className="btn btn-soft btn-accent">
+                  {room.title}
+                </button>
+              ))}
+            </div>
           </ul>
         </div>
       </aside>
