@@ -56,7 +56,7 @@ export default function Sidebar() {
       </button>
 
       <aside
-        className={`fixed top-0 left-0 h-screen w-64 bg-base-300 shadow-md p-4 transform ${
+        className={`z-50 fixed top-0 left-0 h-screen w-64 bg-base-300 shadow-md p-4 transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 md:relative md:translate-x-0`}
       >
@@ -64,11 +64,13 @@ export default function Sidebar() {
           <h3 className="text-lg font-semibold mb-2">Created Rooms</h3>
           <ul className="space-y-2">
             {createdRooms.length === 0 && <span>No rooms created yet.</span>}
-            {createdRooms.map((room) => (
-              <button key={room.id} className="btn">
-                {room.title}
-              </button>
-            ))}
+            <div className="flex flex-col gap-2">
+              {createdRooms.map((room) => (
+                <button key={room.id} className="btn btn-soft btn-accent">
+                  {room.title}
+                </button>
+              ))}
+            </div>
           </ul>
         </div>
         <div className="mt-6">
@@ -76,7 +78,7 @@ export default function Sidebar() {
           {joinedRooms.length === 0 && <span>No rooms joined yet.</span>}
           <ul className="space-y-2">
             {joinedRooms.map((room) => (
-              <button key={room.id} className="btn">
+              <button key={room.id} className="btn btn-soft btn-accent">
                 {room.title}
               </button>
             ))}
