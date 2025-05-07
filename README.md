@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RoomLoop
 
-## Getting Started
+RoomLoop is a collaborative platform for managing and participating in rooms for various purposes such as meetings, webinars, and social gatherings. It supports private and public rooms, real-time messaging, and user invitations.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### General
+- **Room Management**: Create, join, and explore rooms.
+- **Room Types**: Support for private and public rooms.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Private Rooms
+- Invite users by username or email.
+- Restricted access to invited participants only.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Public Rooms
+- Anyone can view and join public rooms from the explore page.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Messaging
+- Real-time messaging within rooms.
+- Emoji reactions to messages.
 
-## Learn More
+### Invitations
+- Invitations appear in the dashboard for easy access.
 
-To learn more about Next.js, take a look at the following resources:
+### Dashboard
+- View created, joined, and public rooms.
+- Filter rooms by tags or status.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Tech Stack
 
-## Deploy on Vercel
+### Backend
+- **Node.js**: JavaScript runtime for building the server-side logic.
+- **Next.js**: Framework for server-side rendering and API routes.
+- **Prisma**: ORM for database management and queries.
+- **PostgreSQL**: Relational database for storing application data.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Frontend
+- **React**: Library for building user interfaces.
+- **Tailwind CSS**: Utility-first CSS framework for styling.
+- **DaisyUI**: Tailwind CSS components for UI design.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Libraries
+- **React Icons**: Icon library for adding icons to the UI.
+- **Better Auth**: Authentication library for managing user sessions.
+- **TypeScript**: Strongly typed programming language for better code quality.
+
+---
+
+## Installation
+
+### Prerequisites
+- Node.js (v16+)
+- PostgreSQL database
+
+### Steps
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/b9aurav/roomloop.git
+   cd roomloop
+   ```
+
+2. Install Dependency:
+    ```bash
+    npm install
+    ```
+
+3. Set up the database:
+    * Create a .env file in the root directory with the following content and make sure to set values:
+    ```bash
+    cp .env.example .env
+    ```
+
+4. Push prisma schema to database:
+    ```bash
+    npx prisma db push
+    ```
+
+5. Seed database with dummy data:
+    ```bash
+    npx prisma db seed
+    ```
+6. Start development server:
+    ```bash
+    npm run dev
+    ```
+
+![alt text](imgs/image.png)
+![alt text](imgs/image-1.png)
+![alt text](imgs/image-2.png)
+![alt text](imgs/image-3.png)
+![alt text](imgs/image-4.png)
