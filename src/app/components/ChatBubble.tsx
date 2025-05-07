@@ -17,7 +17,7 @@ const ChatBubble = (props: Props) => {
     <div className={`flex ${props.isMine ? 'justify-end' : 'justify-start'} mb-4`}>
         <div className={`max-w-xs p-3 rounded-lg ${props.isMine ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}>
             <div className="flex items-center">
-            {!props.isMine && (
+            {!props.isMine && props.sender.image && (
                 <Image width={25} height={25} src={props.sender.image} alt={props.sender.name} className="w-8 h-8 rounded-full mr-2" />
             )}
             <span className="font-semibold">{props.sender.name}</span>

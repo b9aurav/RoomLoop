@@ -34,10 +34,30 @@ export default function RoomPage() {
   }, [session.data]);
 
   const fetchMessages = useCallback(async () => {
-    const response = await fetch(`/api/rooms/${roomId}/messages`);
-    const data = await response.json();
-    setMessages(data);
+    try {
+      const response = await fetch(`/api/rooms/${roomId}/messages`);
+      if (!response.ok) throw new Error("Failed to fetch messages");
+      const data = await response.json();
+      setMessages(data);
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    }
   }, [roomId]);
+
+  useEffect(() => {
+    if (!roomId) return;
+  
+    // Fetch messages initially
+    fetchMessages();
+  
+    // Set up polling to fetch messages every 5 seconds
+    const interval = setInterval(() => {
+      fetchMessages();
+    }, 5000); // Adjust the interval as needed (e.g., 5000ms = 5 seconds)
+  
+    // Clean up the interval on component unmount
+    return () => clearInterval(interval);
+  }, [roomId, fetchMessages]);
 
   useEffect(() => {
     if (session.isPending) return;
@@ -65,17 +85,21 @@ export default function RoomPage() {
 
   const sendMessage = async () => {
     if (message.trim() && session.data) {
-      await fetch(`/api/rooms/${roomId}/messages/send`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: session.data.user.id,
-          content: message,
-        }),
-      });
-
-      setMessage("");
-      fetchMessages();
+      try {
+        await fetch(`/api/rooms/${roomId}/messages/send`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: session.data.user.id,
+            content: message,
+          }),
+        });
+  
+        setMessage(""); // Clear the input field
+        fetchMessages(); // Fetch the latest messages immediately
+      } catch (error) {
+        console.error("Error sending message:", error);
+      }
     }
   };
 
@@ -184,7 +208,7 @@ export default function RoomPage() {
         </div>
 
         {/* Participants sidebar */}
-        <div className="w-64 bg-base-200 p-4 overflow-y-auto md:flex hidden">
+        <div className="w-64 bg-base-200 p-4 overflow-y-auto md:block hidden">
           <h2 className="text-lg font-semibold mb-4">Participants</h2>
           <ul className="space-y-2">
             {participants.map((user) => (

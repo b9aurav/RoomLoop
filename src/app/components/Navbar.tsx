@@ -10,7 +10,7 @@ const Navbar = () => {
   return (
     <nav className="navbar bg-base-100 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-xl font-bold text-primary">RoomLoop</h1>
+        <a href="/dashboard"className="text-xl font-bold text-primary">RoomLoop</a>
         <div>
           <div className="avatar">
             <div className="w-12 rounded-full">

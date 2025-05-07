@@ -2,7 +2,7 @@
 
 import { useSession } from "@/lib/auth-client";
 import { useEffect, useState } from "react";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { FaBars, FaPlus, FaTimes } from "react-icons/fa";
 import { useRoomContext } from "../context/RoomContext";
 import { useRouter } from "next/navigation";
 
@@ -52,7 +52,7 @@ export default function Sidebar() {
 
   const openRoom = (roomId: string) => {
     router.push(`/dashboard/rooms/${roomId}`);
-  }
+  };
 
   return (
     <div className="relative">
@@ -73,8 +73,19 @@ export default function Sidebar() {
           <ul className="space-y-2">
             {createdRooms.length === 0 && <span>No rooms created yet.</span>}
             <div className="flex flex-col gap-2">
+              <button
+                onClick={() => router.push("/dashboard/rooms/create")}
+                className="btn btn-primary btn-soft"
+              >
+                <FaPlus />
+                Create Room
+              </button>
               {createdRooms.map((room) => (
-                <button key={room.id} onClick={() => openRoom(room.id)} className="btn btn-soft btn-accent">
+                <button
+                  key={room.id}
+                  onClick={() => openRoom(room.id)}
+                  className="btn btn-soft btn-accent"
+                >
                   {room.title}
                 </button>
               ))}
@@ -86,8 +97,19 @@ export default function Sidebar() {
           <ul className="space-y-2">
             {joinedRooms.length === 0 && <span>No rooms joined yet.</span>}
             <div className="flex flex-col gap-2">
+              <button
+                onClick={() => router.push("/dashboard/rooms/explore")}
+                className="btn btn-primary btn-soft"
+              >
+                <FaPlus />
+                Explore Rooms
+              </button>
               {joinedRooms.map((room) => (
-                <button key={room.id} onClick={() => openRoom(room.id)} className="btn btn-soft btn-accent">
+                <button
+                  key={room.id}
+                  onClick={() => openRoom(room.id)}
+                  className="btn btn-soft btn-accent"
+                >
                   {room.title}
                 </button>
               ))}

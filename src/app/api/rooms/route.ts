@@ -12,7 +12,7 @@ export async function GET(req: Request) {
   try {
     const createdRooms = await prisma.Room.findMany({
       where: { creatorId: userId },
-      select: { id: true, title: true },
+      select: { id: true, title: true, description: true, startTime: true, endTime: true, tag: true, creator: true, creatorId: true },
     });
 
     const joinedRooms = await prisma.Room.findMany({
@@ -21,7 +21,7 @@ export async function GET(req: Request) {
           some: { userId },
         },
       },
-      select: { id: true, title: true },
+      select: { id: true, title: true, description: true, startTime: true, endTime: true, tag: true, creator: true, creatorId: true },
     });
 
     return NextResponse.json({ createdRooms, joinedRooms });
