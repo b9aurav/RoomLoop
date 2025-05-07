@@ -28,6 +28,7 @@ export default function RoomPage() {
   >([]);
   const [message, setMessage] = useState("");
   const [participants, setParticipants] = useState<User[]>([]);
+  const [inviteIdentifier, setInviteIdentifier] = useState("");
 
   useEffect(() => {
     userNameRef.current = session.data?.user.name;
@@ -46,15 +47,15 @@ export default function RoomPage() {
 
   useEffect(() => {
     if (!roomId) return;
-  
+
     // Fetch messages initially
     fetchMessages();
-  
+
     // Set up polling to fetch messages every 5 seconds
     const interval = setInterval(() => {
       fetchMessages();
     }, 5000); // Adjust the interval as needed (e.g., 5000ms = 5 seconds)
-  
+
     // Clean up the interval on component unmount
     return () => clearInterval(interval);
   }, [roomId, fetchMessages]);
@@ -94,7 +95,7 @@ export default function RoomPage() {
             content: message,
           }),
         });
-  
+
         setMessage(""); // Clear the input field
         fetchMessages(); // Fetch the latest messages immediately
       } catch (error) {
@@ -145,6 +146,27 @@ export default function RoomPage() {
         console.error(error);
         alert("An error occurred while deleting the room.");
       }
+    }
+  };
+
+  const handleInvite = async () => {
+    try {
+      const response = await fetch(`/api/rooms/${roomId}/invite`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ identifier: inviteIdentifier }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to invite user");
+      }
+
+      const data = await response.json();
+      alert(data.message);
+      setInviteIdentifier("");
+    } catch (error) {
+      console.error("Error inviting user:", error);
+      alert("User not found");
     }
   };
 
@@ -211,6 +233,19 @@ export default function RoomPage() {
         <div className="w-64 bg-base-200 p-4 overflow-y-auto md:block hidden">
           <h2 className="text-lg font-semibold mb-4">Participants</h2>
           <ul className="space-y-2">
+            {roomDetails.type === "PRIVATE" && (
+              <div className="join">
+              <div>
+                <label className="input validator join-item">
+                  <input type="email" value={inviteIdentifier} onChange={(e) => setInviteIdentifier(e.target.value)} placeholder="Email" required />
+                </label>
+              </div>
+              <button onClick={handleInvite} className="btn btn-neutral join-item">Invite</button>
+            </div>
+            )}
+            {participants.length === 0 && (
+              <li className="text-gray-500">No participants yet</li>
+            )}
             {participants.map((user) => (
               <li key={user.id} className="flex items-center gap-2">
                 <div className="avatar">

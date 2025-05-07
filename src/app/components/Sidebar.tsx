@@ -14,11 +14,33 @@ interface Room {
 export default function Sidebar() {
   const [createdRooms, setCreatedRooms] = useState<Room[]>([]);
   const [joinedRooms, setJoinedRooms] = useState<Room[]>([]);
+  const [invitations, setInvitations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const session = useSession();
   const { refreshRooms } = useRoomContext();
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchInvitations = async () => {
+      try {
+        if (!session.data) {
+          return;
+        }
+
+        const response = await fetch(`/api/invitations`, {
+          headers: { "user-id": session.data.user.id },
+        });
+
+        const data = await response.json();
+        setInvitations(data);
+      } catch (error) {
+        console.error("Failed to fetch invitations:", error);
+      }
+    };
+
+    fetchInvitations();
+  }, [session]);
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -114,6 +136,21 @@ export default function Sidebar() {
                 </button>
               ))}
             </div>
+          </ul>
+        </div>
+        <div className="mt-6">
+          <h3 className="text-lg font-semibold mb-2">Invitations</h3>
+          <ul className="gap-2 flex flex-col">
+            {invitations.length === 0 && <span>No invitations yet.</span>}
+            {invitations.map((invite) => (
+              <button
+                key={invite.id}
+                onClick={() => openRoom(invite.room.id)}
+                className="btn btn-soft btn-accent"
+              >
+                {invite.room.title}
+              </button>
+            ))}
           </ul>
         </div>
       </aside>

@@ -42,6 +42,7 @@ export async function POST(req: Request) {
         tag,
         joinCode: generateJoinCode(),
         creatorId,
+        status: "SCHEDULED",
       },
     });
 
